@@ -2,6 +2,7 @@ module.exports = {
     name: 'clean',
     description: 'delete up 99 messages',
     execute(message, args) {
+
         const value = parseInt(args[0]) + 1;
 
         if (isNaN(value)) {
@@ -14,6 +15,7 @@ module.exports = {
         }
 
         message.channel.bulkDelete(value, true).catch(err => {
+
             console.error(err);
             message.channel.send('there was an error  trying delete messages in this channel! :(');
         });

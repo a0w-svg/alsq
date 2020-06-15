@@ -1,14 +1,17 @@
 module.exports = {
     name: 'avatar',
     description: 'Get the avatar URL of the tagged user(s), or your own avatar.',
+    aliases: ['icon', 'pfp'],
     execute(message) {
-        if (!msg.mentions.users.size) {
-            return msg.channel.send(`Your Avatar: <${message.author.displayAvatarURL({ format: "png", dynamic: true })}`);
+        if (!message.mentions.users.size) {
+
+            return message.channel.send(`Your Avatar: <${message.author.displayAvatarURL({ format: "png", dynamic: true })}`);
         }
 
         const avatarList = message.mentions.users.map(user => {
+
             return `${user.username}'s avatar: <${user.displayAvatarURL({ format: "png", dynamic: true })}`;
-        });
+         });
 
         message.channel.send(avatarList);
     },
