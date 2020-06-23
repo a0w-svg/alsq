@@ -48,8 +48,8 @@ async def cool(ctx):
 async def hi(ctx):
     await ctx.send("こんにちは, {}".format(ctx.author.name))
 
-@bot.command()
-async def nick(ctx, member: discord.Member, *, nickname):
+@bot.command(pass_context=True)
+async def nick(ctx, member: discord.Member, nickname):
     await member.edit(nick=nickname)
     await ctx.send("changed {member.name}'s nickname to {nickname}")
 
