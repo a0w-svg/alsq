@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
+import os
+import youtube_dl
 import random
 
 description = '''ALSQ bot sample '''
@@ -11,6 +14,10 @@ async def on_ready():
     print("Logged in as {} {}".format(bot.user.name, bot.user.id))
     print("---------")
 
+@bot.command(pass_context=True)
+async def nick(ctx, member: discord.Member, nick):
+    await member.edit(nick=nick)
+    await ctx.send(f'Nickname was changed for {member.mention} ')
 @bot.command()
 async def roll(ctx, dice: str):
     # rolls a dice in NdN format.
@@ -34,10 +41,57 @@ async def repeat(msg, times: int, content: str):
         await msg.channel.send(content)
 
 @bot.command()
-async def joined(msg, member: discord.Member):
-    # says when a member joined.
-    await msg.channel.send("{0.name} joined in {0.joined_at}".format(member))
+async def leave(msg):
+    channel = msg.message.author.voice.channel
+    voice = get(bot.voice_clients, guild=msg.guild)
 
+    if voice and voice.is_connected():
+        await voice.disconnect()
+        print(f"The bot has left {channel}")
+        await msg.channel.send(f"Left {channel}")
+    else:
+        print("Bot was told to leave voice channel, but was not in one")
+        await msg.channel.send("Don't think I am in a voice channel")
+
+@bot.command()
+async def play(msg, url: str):
+    song_loc = os.path.isfile("song.mp3")
+    try:
+        if song_loc:
+            os.remove("song.mp3")
+            print("Removed previos song file")
+    except PermissionError:
+        print("Trying to delete song file, but it's being played")
+        await msg.channel.send("ERROR: Music playing failed")
+        return
+    await msg.channel.send("Getting everything ready now")
+
+    voice =  get(bot.voice_clients, guild=msg.guild)
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+    }
+
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        print("Downloading audio now \n")
+        ydl.download([url])
+    
+    for file in os.listdir("./"):
+        if file.endswith(".mp3"):
+            name = file
+            print(f"Renamed File: {file}\n")
+            os.rename(file, "song.mp3")
+    voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: print("Song done!"))
+    voice.source = discord.PCMVolumeTransformer(voice.source)
+    voice.source.volume = 0.07
+    name_n = name.rsplit("-", 2)
+    await msg.channel.send(f"Playing {name_n[0]}")
+    print("playing\n")
 @bot.group()
 async def cool(msg):
     # says if a user is cool
@@ -95,5 +149,6 @@ async def clean(msg, count: int):
 async def _bot(msg):
     # is the bot cool
     await msg.send("Yes, the bot is cool")
+
 
 bot.run('NzIxNjU2MTI4NTU1MDU3MTgy.XvEDvg.9F2ozJT-Gf3C5R1ier9OJrKAcCM')
