@@ -1,4 +1,5 @@
 discord.py
+pip
 discord.py[voice]
 youtube-dl
 ffmpeg-python
