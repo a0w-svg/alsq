@@ -4,3 +4,9 @@ discord.py[voice]
 youtube-dl
 ffmpeg-python
 PyNaCl
+colorlog
+cffi --only-binary all; 
+aiohttp>=3.3.0,<3.6.0
+websockets>=6.0,<7.0
+chardet
+opuslib
