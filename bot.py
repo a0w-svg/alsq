@@ -6,13 +6,7 @@ import youtube_dl
 import random
 
 description = '''ALSQ bot sample '''
-if not discord.opus.is_loaded():
-    # the 'opus' library here is opus.dll on windows
-    # or libopus.so on linux in the current directory
-    # you should replace this with the location the
-    # opus library is located in and with the proper filename.
-    # note that on windows this DLL is automatically provided for you
-    discord.opus.load_opus('opus')
+
 bot = commands.Bot(command_prefix='$', description=description)
 
 @bot.event
@@ -61,6 +55,13 @@ async def leave(msg):
 
 @bot.command()
 async def play(msg, url: str):
+    if not discord.opus.is_loaded():
+    # the 'opus' library here is opus.dll on windows
+    # or libopus.so on linux in the current directory
+    # you should replace this with the location the
+    # opus library is located in and with the proper filename.
+    # note that on windows this DLL is automatically provided for you
+    discord.opus.load_opus('opus')
     song_loc = os.path.isfile("song.mp3")
     try:
         if song_loc:
