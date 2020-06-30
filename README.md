@@ -1,0 +1,2 @@
+# alsq
+bot discord alsq
