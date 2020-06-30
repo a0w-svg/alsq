@@ -101,16 +101,25 @@ async def cool(msg):
 #hi user
 @bot.command(description='''Send welcome message 
                             up to 12  display はよう (Good morning)
-                            from 12 to 17 display (Good afternoon) 
-                            from 17 to 22 display (Good evening)''')
-async def hi(msg):
+                            from 12 to 17 display こんにちは (Good afternoon) 
+                            from 17 to 22 display こんばんは (Good evening)''')
+async def hi(msg, member: discord.Member = None):
     times = int(time.strftime('%H'))
-    if times <= 12:
-        await msg.channel.send("おはよう, {}".format(msg.author.name))
-    elif times > 12 and times <= 17:
-         await msg.channel.send("こんにちは, {}".format(msg.author.name))
-    elif times > 17 and times <= 22:
-         await msg.channel.send("こんばんは, {}".format(msg.author.name))
+    if member == None:
+        if times <= 12:
+            await msg.channel.send("おはよう, {}".format(msg.author.name))
+        elif times > 12 and times <= 17:
+            await msg.channel.send("こんにちは, {}".format(msg.author.name))
+        elif times > 17 and times <= 22:
+            await msg.channel.send("こんばんは, {}".format(msg.author.name))
+    else:
+        if times <= 12:
+            await msg.channel.send("おはよう, {}".format(member.display_name))
+        elif times > 12 and times <= 17:
+            await msg.channel.send("こんにちは, {}".format(member.display_name))
+        elif times > 17 and times <= 22:
+            await msg.channel.send("こんばんは, {}".format(member.display_name))
+
 @bot.command(description='say goodbye')
 async def bye(msg):
     await msg.channel.send("さよなら, {}".format(msg.author.name))
