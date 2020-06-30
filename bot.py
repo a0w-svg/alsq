@@ -99,7 +99,10 @@ async def cool(msg):
     if msg.invoked_subcommand is None:
         await msg.channel.send("No, {0.subcommand_passed} is not cool".format(msg))
 #hi user
-@bot.command(description='Send welcome message')
+@bot.command(description='''Send welcome message 
+                            up to 12  display はよう (Good morning)
+                            from 12 to 17 display (Good afternoon) 
+                            from 17 to 22 display (Good evening)''')
 async def hi(msg):
     times = int(time.strftime('%H'))
     if times <= 12:
@@ -176,15 +179,18 @@ async def divorce(msg, member: discord.Member):
     embed = discord.Embed(title="divorce")
     embed.add_field(name="Why did this happen? :(", value=f"{msg.author.name} got divorced {member.display_name}")
     await msg.channel.send(embed=embed)
+
 @bot.command(description='send gif with bomb')
 async def allahakbar(msg):
     embed = discord.Embed(title="gif with bomb")
     embed.set_image(url="https://media.discordapp.net/attachments/488103401545007105/727484372235845713/emote.gif")
     await msg.channel.send(embed=embed)
+
 @bot.command(description='gif')
 async def kill(msg):
     embed = discord.Embed(title="Kill you")
     embed.set_image(url="https://cdn.discordapp.com/emojis/708571810639380502.gif?v=1")
     await msg.channel.send(embed=embed)
+
 
 bot.run('NzIxNjU2MTI4NTU1MDU3MTgy.XvshwA.RV3BfDx2FPP48_rNfd3EQT2rS9M')
