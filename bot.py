@@ -4,6 +4,7 @@ from discord.utils import get
 import os
 import youtube_dl
 import random
+import time
 
 description = '''ALSQ bot sample '''
 
@@ -34,13 +35,13 @@ async def roll(ctx, dice: str):
 async def choose(msg, *choices: str):
     # chooses between multiple choices
     await msg.channel.send(random.choice(choices))
-@bot.command()
+@bot.command(description='repeats the given word as many times as given')
 async def repeat(msg, times: int, content: str):
     #repeats a message multiple times.
     for i in range(times):
         await msg.channel.send(content)
 
-@bot.command()
+@bot.command(description='leaves the voice channel')
 async def leave(msg):
     channel = msg.message.author.voice.channel
     voice = get(bot.voice_clients, guild=msg.guild)
@@ -53,7 +54,7 @@ async def leave(msg):
         print("Bot was told to leave voice channel, but was not in one")
         await msg.channel.send("Don't think I am in a voice channel")
 
-@bot.command()
+@bot.command(description='Play music from youtube link')
 async def play(msg, url: str):
     song_loc = os.path.isfile("song.mp3")
     try:
@@ -73,7 +74,7 @@ async def play(msg, url: str):
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
-            'preferredquality': '192',
+            'preferredquality': '98',
         }],
     }
 
@@ -88,7 +89,7 @@ async def play(msg, url: str):
             os.rename(file, "song.mp3")
     voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: print("Song done!"))
     voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 0.07
+    voice.source.volume = 0.7
     name_n = name.rsplit("-", 2)
     await msg.channel.send(f"Playing {name_n[0]}")
     print("playing\n")
@@ -98,12 +99,20 @@ async def cool(msg):
     if msg.invoked_subcommand is None:
         await msg.channel.send("No, {0.subcommand_passed} is not cool".format(msg))
 #hi user
-@bot.command()
-async def hi(ctx):
-    await ctx.send("こんにちは, {}".format(ctx.author.name))
-
+@bot.command(description='Send welcome message')
+async def hi(msg):
+    times = int(time.strftime('%H'))
+    if times <= 12:
+        await msg.channel.send("おはよう, {}".format(msg.author.name))
+    elif times > 12 and times <= 17:
+         await msg.channel.send("こんにちは, {}".format(msg.author.name))
+    elif times > 17 and times <= 22:
+         await msg.channel.send("こんばんは, {}".format(msg.author.name))
+@bot.command(description='say goodbye')
+async def bye(msg):
+    await msg.channel.send("さよなら, {}".format(msg.author.name))
 # ban user
-@bot.command()
+@bot.command(description='Ban user')
 @commands.has_permissions(ban_members = True)
 async def ban(msg, member: discord.Member = None, reason = None):
     if reason == None:
@@ -113,17 +122,16 @@ async def ban(msg, member: discord.Member = None, reason = None):
         await member.send(message_ok)
         await member.ban(reason=reason)
 
-# unbans  user
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, description='join the voice channel')
 async def join(msg):
     channel = msg.author.voice.channel
     await channel.connect()
-@bot.command()
+@bot.command(description='display server stats')
 async def server_stats(msg):
     online = 0
     idle = 0
     offline = 0
-    sentdex_guild = bot.get_guild(704422919706509445)
+    sentdex_guild = bot.get_guild(726566631530168330)
     
     for i in sentdex_guild.members:
         if str(i.status) == "online":
@@ -138,7 +146,7 @@ async def server_stats(msg):
     embed.add_field(name="offline: ", value=f"{offline}", inline=True)
     embed.add_field(name="idle: ", value=f"{idle}", inline=True)
     await msg.channel.send(embed=embed)
-@bot.command()
+@bot.command(description='delete max 100 messages')
 async def clean(msg, count: int):
     # fix count delete commands
     if count <= 100:
@@ -150,5 +158,28 @@ async def _bot(msg):
     # is the bot cool
     await msg.send("Yes, the bot is cool")
 
+@bot.command(description='Love test')
+async def ship(msg, member: discord.Member = None, member1: discord.Member = None):
+    num = random.randint(0, 100)
+    embed = discord.Embed(title="Test love")
+    embed.add_field(name=f"{member.display_name} and {member1.display_name}", value=f"{num}%", inline=True)
+    await msg.channel.send(embed=embed)
 
-bot.run('NzIxNjU2MTI4NTU1MDU3MTgy.XvEDvg.9F2ozJT-Gf3C5R1ier9OJrKAcCM')
+@bot.command(description='marry user')
+async def marry(msg, member: discord.Member):
+    embed = discord.Embed(title="Marry")
+    embed.add_field(name="all the best for a new way of life", value=f"{msg.author.name} married {member.display_name}")
+    await msg.channel.send(embed=embed)
+
+@bot.command(description='divorce')
+async def divorce(msg, member: discord.Member):
+    embed = discord.Embed(title="divorce")
+    embed.add_field(name="Why did this happen? :(", value=f"{msg.author.name} got divorced {member.display_name}")
+    await msg.channel.send(embed=embed)
+@bot.command(description='send gif with bomb')
+async def allahakbar(msg):
+    embed = discord.Embed(title="gif with bomb")
+    embed.set_image(url="https://i.makeagif.com/media/2-05-2016/BrBZFm.mp4")
+    await msg.channel.send(embed=embed)
+
+bot.run('NzIxNjU2MTI4NTU1MDU3MTgy.Xvb6qg.OHVIjbTU6ax5IqbRg7kHIRnQ-Lg')
