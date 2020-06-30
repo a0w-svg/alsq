@@ -179,7 +179,7 @@ async def divorce(msg, member: discord.Member):
 @bot.command(description='send gif with bomb')
 async def allahakbar(msg):
     embed = discord.Embed(title="gif with bomb")
-    embed.set_image(url="https://i.makeagif.com/media/2-05-2016/BrBZFm.mp4")
+    embed.set_image(url="https://media.discordapp.net/attachments/488103401545007105/727484372235845713/emote.gif")
     await msg.channel.send(embed=embed)
 
 bot.run('NzIxNjU2MTI4NTU1MDU3MTgy.XvshwA.RV3BfDx2FPP48_rNfd3EQT2rS9M')
