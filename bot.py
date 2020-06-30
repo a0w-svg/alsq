@@ -100,7 +100,7 @@ async def cool(msg):
         await msg.channel.send("No, {0.subcommand_passed} is not cool".format(msg))
 #hi user
 @bot.command(description='''Send welcome message 
-                            up to 12  display はよう (Good morning)
+                            up to 12  display おはよう (Good morning)
                             from 12 to 17 display こんにちは (Good afternoon) 
                             from 17 to 22 display こんばんは (Good evening)''')
 async def hi(msg, member: discord.Member = None):
