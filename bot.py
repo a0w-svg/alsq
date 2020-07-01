@@ -121,8 +121,11 @@ async def hi(msg, member: discord.Member = None):
             await msg.channel.send("こんばんは, {}".format(member.display_name))
 
 @bot.command(description='say goodbye')
-async def bye(msg):
-    await msg.channel.send("さよなら, {}".format(msg.author.name))
+async def bye(msg, member: discord.Member = None):
+    if member == None:
+        await msg.channel.send("さよなら, {}".format(msg.author.name))
+    else:
+        await msg.channel.send("さよなら, {}".format(member.mention))
 # ban user
 @bot.command(description='Ban user')
 @commands.has_permissions(ban_members = True)
