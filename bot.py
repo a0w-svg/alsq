@@ -139,6 +139,8 @@ async def ban(msg, member: discord.Member = None, reason = None):
 async def jkp(msg, chose: str = None):
     ls = ['paper', 'rock', 'shears']
     a = random.choice(ls)
+    if chose == None:
+        await msg.channel.send("Wrong argument please type $jkp <rock, paper, shears>, {}".format(msg.author.name))
     if a == 'paper' and chose == 'rock':
         await msg.channel.send("Bot chose paper, you lost")
     if a == 'rock' and chose == 'paper':
@@ -151,8 +153,6 @@ async def jkp(msg, chose: str = None):
         await msg.channel.send("Bot chose paper, you winner")
     if a == 'shears' and chose == 'paper':
         await msg.channel.send("Bot chose shears, you lost")
-    else:
-        await msg.channel.send("Wrong argument please type $jkp <rock, paper, shears>, {}".format(msg.author.name))
 @bot.command(pass_context=True, description='join the voice channel')
 async def join(msg):
     channel = msg.author.voice.channel
