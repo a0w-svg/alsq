@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 import os
+import asyncio
 import youtube_dl
 import random
 import time
@@ -105,20 +106,17 @@ async def cool(msg):
                             from 17 to 22 display こんばんは (Good evening)''')
 async def hi(msg, member: discord.Member = None):
     times = int(time.strftime('%H'))
+    message = None
     if member == None:
-        if times <= 12:
-            await msg.channel.send("おはよう, {}".format(msg.author.name))
-        elif times > 12 and times <= 17:
-            await msg.channel.send("こんにちは, {}".format(msg.author.name))
-        elif times > 17 and times <= 22:
-            await msg.channel.send("こんばんは, {}".format(msg.author.name))
+       message = msg.author.name
     else:
-        if times <= 12:
-            await msg.channel.send("おはよう, {}".format(member.display_name))
-        elif times > 12 and times <= 17:
-            await msg.channel.send("こんにちは, {}".format(member.display_name))
-        elif times > 17 and times <= 22:
-            await msg.channel.send("こんばんは, {}".format(member.display_name))
+        message = member.mention
+    if times <= 12:
+        await msg.channel.send("おはよう, {}".format(message))
+    elif times > 12 and times <= 17:
+        await msg.channel.send("こんにちは, {}".format(message))
+    elif times > 17 and times <= 22:
+        await msg.channel.send("こんばんは, {}".format(message))
 
 @bot.command(description='say goodbye')
 async def bye(msg, member: discord.Member = None):
@@ -137,6 +135,24 @@ async def ban(msg, member: discord.Member = None, reason = None):
         await member.send(message_ok)
         await member.ban(reason=reason)
 
+@bot.command(description='paper, rock, shears')
+async def jkp(msg, chose: str = None):
+    ls = ['paper', 'rock', 'shears']
+    a = random.choice(ls)
+    if a == 'paper' and chose == 'rock':
+        await msg.channel.send("Bot chose paper, you lost")
+    if a == 'rock' and chose == 'paper':
+        await msg.channel.send("Bot chose rock, you winner")
+    if a == 'shears' and chose == 'rock':
+        await msg.channel.send("Bot chose shears, you winner")
+    if a == 'rock' and chose == 'shears':
+        await msg.channel.send("Bot chose rock, you lost")
+    if a == 'paper' and chose == 'shears':
+        await msg.channel.send("Bot chose paper, you winner")
+    if a == 'shears' and chose == 'paper':
+        await msg.channel.send("Bot chose shears, you lost")
+    else:
+        await msg.channel.send("Wrong argument please type $jkp <rock, paper, shears>, {}".format(msg.author.name))
 @bot.command(pass_context=True, description='join the voice channel')
 async def join(msg):
     channel = msg.author.voice.channel
