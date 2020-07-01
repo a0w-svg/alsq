@@ -134,25 +134,26 @@ async def ban(msg, member: discord.Member = None, reason = None):
         message_ok = f"You have been banned from {msg.guild.name} for {reason}"
         await member.send(message_ok)
         await member.ban(reason=reason)
-
-@bot.command(description='paper, rock, shears')
+'''
+@bot.command(description='paper, rock, scissors')
 async def jkp(msg, chose: str = None):
-    ls = ['paper', 'rock', 'shears']
+    ls = ['paper', 'rock', 'scissors']
     a = random.choice(ls)
     if chose == None:
-        await msg.channel.send("Wrong argument please type $jkp <rock, paper, shears>, {}".format(msg.author.name))
+        await msg.channel.send("Wrong argument please type $jkp <rock, paper, scissors>, {}".format(msg.author.name))
     if a == 'paper' and chose == 'rock':
         await msg.channel.send("Bot chose paper, you lost")
     if a == 'rock' and chose == 'paper':
         await msg.channel.send("Bot chose rock, you winner")
-    if a == 'shears' and chose == 'rock':
-        await msg.channel.send("Bot chose shears, you winner")
-    if a == 'rock' and chose == 'shears':
+    if a == 'scissors' and chose == 'rock':
+        await msg.channel.send("Bot chose scissors, you winner")
+    if a == 'rock' and chose == 'scissors':
         await msg.channel.send("Bot chose rock, you lost")
-    if a == 'paper' and chose == 'shears':
+    if a == 'paper' and chose == 'scissors':
         await msg.channel.send("Bot chose paper, you winner")
-    if a == 'shears' and chose == 'paper':
-        await msg.channel.send("Bot chose shears, you lost")
+    if a == 'scissors' and chose == 'paper':
+        await msg.channel.send("Bot chose scissors, you lost")
+'''
 @bot.command(pass_context=True, description='join the voice channel')
 async def join(msg):
     channel = msg.author.voice.channel
