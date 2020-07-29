@@ -200,18 +200,19 @@ async def ship(msg, user: discord.Member = None, user2: discord.Member = None):
     val = random.randint(0, 100)
     if user == None or user2 == None:
         await msg.send("please type two members")
-    if val <= 30:
-        em = str(emoji.emojize(':broken_heart:'))
-    if val > 30 and val <= 60:
-        em = str(emoji.emojize(':blue_heart:'))
-    if val > 60 and val <= 80:
-        em = str(emoji.emojize(':two_hearts:'))
-    if val > 80 and val <= 100:
-        em = str(emoji.emojize(':cupid:'))
-    embed = discord.Embed(title="Love test")
-    embed.add_field(name="Your score:", value=f"{val}%")
-    embed.add_field(name="Reaction", value=f"{em}")
-    await msg.send(embed=embed)
+    else:
+        if val <= 30:
+            em = str(emoji.emojize(':broken_heart:'))
+        if val > 30 and val <= 60:
+            em = str(emoji.emojize(':blue_heart:'))
+        if val > 60 and val <= 80:
+            em = str(emoji.emojize(':two_hearts:'))
+        if val > 80 and val <= 100:
+            em = str(emoji.emojize(':cupid:'))
+        embed = discord.Embed(title="Love test")
+        embed.add_field(name="Your score:", value=f"{val}%")
+        embed.add_field(name="Reaction", value=f"{em}")
+        await msg.send(embed=embed)
 
 @bot.command(description='marry user')
 async def marry(msg, member: discord.Member):
