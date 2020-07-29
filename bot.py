@@ -6,6 +6,7 @@ import asyncio
 import youtube_dl
 import random
 import time
+import emoji
 
 description = '''ALSQ bot sample '''
 
@@ -41,7 +42,7 @@ async def repeat(msg, times: int, content: str):
     #repeats a message multiple times.
     for i in range(times):
         await msg.channel.send(content)
-
+"""
 @bot.command(description='leaves the voice channel')
 async def leave(msg):
     channel = msg.message.author.voice.channel
@@ -54,7 +55,8 @@ async def leave(msg):
     else:
         print("Bot was told to leave voice channel, but was not in one")
         await msg.channel.send("Don't think I am in a voice channel")
-
+"""
+"""
 @bot.command(description='Play music from youtube link')
 async def play(msg, url: str):
     song_loc = os.path.isfile("song.mp3")
@@ -94,6 +96,7 @@ async def play(msg, url: str):
     name_n = name.rsplit("-", 2)
     await msg.channel.send(f"Playing {name_n[0]}")
     print("playing\n")
+ """
 @bot.group()
 async def cool(msg):
     # says if a user is cool
@@ -134,7 +137,7 @@ async def ban(msg, member: discord.Member = None, reason = None):
         message_ok = f"You have been banned from {msg.guild.name} for {reason}"
         await member.send(message_ok)
         await member.ban(reason=reason)
-'''
+"""
 @bot.command(description='paper, rock, scissors')
 async def jkp(msg, chose: str = None):
     ls = ['paper', 'rock', 'scissors']
@@ -153,11 +156,13 @@ async def jkp(msg, chose: str = None):
         await msg.channel.send("Bot chose paper, you winner")
     if a == 'scissors' and chose == 'paper':
         await msg.channel.send("Bot chose scissors, you lost")
-'''
+"""
+"""
 @bot.command(pass_context=True, description='join the voice channel')
 async def join(msg):
     channel = msg.author.voice.channel
     await channel.connect()
+ """
 @bot.command(description='display server stats')
 async def server_stats(msg):
     online = 0
@@ -191,11 +196,22 @@ async def _bot(msg):
     await msg.send("Yes, the bot is cool")
 
 @bot.command(description='Love test')
-async def ship(msg, member: discord.Member = None, member1: discord.Member = None):
-    num = random.randint(0, 100)
-    embed = discord.Embed(title="Test love")
-    embed.add_field(name=f"{member.display_name} and {member1.display_name}", value=f"{num}%", inline=True)
-    await msg.channel.send(embed=embed)
+async def ship(msg, user: discord.Member = None, user2: discord.Member = None):
+    val = random.randint(0, 100)
+    if user == None or user2 == None:
+        await msg.send("please type two members")
+    if val <= 30:
+        em = str(emoji.emojize(':broken_heart:'))
+    if val > 30 and val <= 60:
+        em = str(emoji.emojize(':blue_heart:'))
+    if val > 60 and val <= 80:
+        em = str(emoji.emojize(':two_hearts:'))
+    if val > 80 and val <= 100:
+        em = str(emoji.emojize(':cupid:'))
+    embed = discord.Embed(title="Love test")
+    embed.add_field(name="Your score:", value=f"{val}%")
+    embed.add_field(name="Reaction", value=f"{em}")
+    await msg.send(embed=embed)
 
 @bot.command(description='marry user')
 async def marry(msg, member: discord.Member):
