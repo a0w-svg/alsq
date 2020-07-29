@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.utils import get
 import os
 import asyncio
-import youtube_dl
 import random
 import time
 import emoji
@@ -21,9 +20,7 @@ async def nick(ctx, member: discord.Member = None, nick: str = None):
      if nick == None:
         ctx.send("please add  nick")
      if member == None:
-        await bot.change_nickname(ctx.message.author, nick)
-     else:
-        await bot.change_nickname(member, nick)
+        await member.edit(nick=nick)
 @bot.command()
 async def roll(ctx, dice: str):
     # rolls a dice in NdN format.
