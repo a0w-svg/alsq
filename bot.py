@@ -20,9 +20,9 @@ async def on_ready():
 async def nick(ctx, member: discord.Member = None, nick: str = None):
      if nick == None:
         ctx.send("please add  nick")
-    if member == None:
+     if member == None:
         await bot.change_nickname(ctx.message.author, nick)
-    else:
+     else:
         await bot.change_nickname(member, nick)
 @bot.command()
 async def roll(ctx, dice: str):
