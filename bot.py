@@ -17,7 +17,7 @@ async def on_ready():
     print("---------")
 
 @bot.command(pass_context=True)
-async def nick(ctx, member: discord.Member, nick):
+async def nick(ctx, member: discord.Member = None, nick: str = None):
      if nick == None:
         ctx.send("please add  nick")
     if member == None:
