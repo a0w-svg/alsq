@@ -9,7 +9,7 @@ import time
 import emoji
 
 description = '''ALSQ bot sample '''
-
+client = discord.Client()
 bot = commands.Bot(command_prefix='$', description=description)
 
 @bot.event
@@ -18,9 +18,13 @@ async def on_ready():
     print("---------")
 
 @bot.command(pass_context=True)
-async def nick(ctx, member: discord.Member, nick):
-    await member.edit(nick=nick)
-    await ctx.send(f'Nickname was changed for {member.mention} ')
+async def nick(ctx, member: discord.Member, nick: str = None):
+    if nick == None:
+        ctx.send("please add  nick")
+    if member == None:
+        await client.change_nickname(ctx.message.author, nick)
+    else:
+        await client.change_nickname(member, nick)
 @bot.command()
 async def roll(ctx, dice: str):
     # rolls a dice in NdN format.
