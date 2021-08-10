@@ -6,7 +6,7 @@ ffmpeg-python
 PyNaCl
 colorlog
 cffi --only-binary all; 
-aiohttp>=3.3.0,<3.6.0
+aiohttp>=3.7.4
 websockets>=9.1
 chardet
 opuslib
